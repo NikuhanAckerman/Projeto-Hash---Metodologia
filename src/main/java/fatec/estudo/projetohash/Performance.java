@@ -1,4 +1,4 @@
 package fatec.estudo.projetohash;
 
-public class AtaqueForcaBruta {
+public class Performance {
 }

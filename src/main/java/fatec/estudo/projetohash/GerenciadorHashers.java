@@ -2,8 +2,11 @@ package fatec.estudo.projetohash;
 
 import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
 import org.springframework.security.crypto.scrypt.SCryptPasswordEncoder;
+
+import java.util.ArrayList;
 
 public class GerenciadorHashers {
 
@@ -46,4 +49,13 @@ public class GerenciadorHashers {
     public void setBcryptHasher_DEFAULT(BCryptPasswordEncoder bcryptHasher_DEFAULT) {
         this.bcryptHasher_DEFAULT = bcryptHasher_DEFAULT;
     }
+
+    public ArrayList<String> hashPasswords(PasswordEncoder passwordEncoder, String[] passwords) {
+        ArrayList<String> hashedPasswords = new ArrayList<>();
+        for (String password : passwords) {
+            hashedPasswords.add(passwordEncoder.encode(password));
+        }
+        return hashedPasswords;
+    }
+
 }

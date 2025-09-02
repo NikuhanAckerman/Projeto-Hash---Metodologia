@@ -1,7 +1,15 @@
 package fatec.estudo.projetohash;
 
+import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
+import org.springframework.security.crypto.scrypt.SCryptPasswordEncoder;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
 
 public class AtaqueDicionario {
 
@@ -11,7 +19,11 @@ public class AtaqueDicionario {
     // é percorrido. Essas senhas passam por hashing e os hashes são comparados com
     // o hash senha verdadeira, que é a última senha do array, de posição 199.
 
-    PasswordEncoder encoder = new BCryptPasswordEncoder();
+    GerenciadorHashers gerenciadorHasher = new GerenciadorHashers();
+    BCryptPasswordEncoder bCryptPasswordEncoder = gerenciadorHasher.getBcryptHasher_DEFAULT();
+    SCryptPasswordEncoder sCryptPasswordEncoder = gerenciadorHasher.getScryptHasher_DEFAULT();
+    Pbkdf2PasswordEncoder pbkdf2PasswordEncoder = gerenciadorHasher.getPbkdf2Hasher_DEFAULT();
+    Argon2PasswordEncoder argon2PasswordEncoder = gerenciadorHasher.getArgon2Hasher_DEFAULT();
 
     String[] senhas = {
             "123456",
@@ -214,6 +226,21 @@ public class AtaqueDicionario {
             "freedom",
             "cheese"
     };
+
+    public void run() throws IOException {
+        ArrayList<String> bcryptHashes = new ArrayList<>(gerenciadorHasher.hashPasswords(bCryptPasswordEncoder, senhas));
+        //ArrayList<String> scryptHashes = new ArrayList<>(gerenciadorHasher.hashPasswords(sCryptPasswordEncoder, senhas));
+        //ArrayList<String> pbkdf2Hashes = new ArrayList<>(gerenciadorHasher.hashPasswords(pbkdf2PasswordEncoder, senhas));
+        //ArrayList<String> argon2Hashes = new ArrayList<>(gerenciadorHasher.hashPasswords(argon2PasswordEncoder, senhas));
+
+        System.out.println(senhas.length);
+
+        FileWriter writer = new FileWriter("C:\\hashcat-7.1.2\\bcryptHashes.txt");
+        for (String hash : bcryptHashes) {
+            writer.write(hash + "\n");
+        }
+
+    }
 
     /*
     int indice = (int) (Math.random() * senhas.length);
