@@ -5,6 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.io.IOException;
+import java.util.Optional;
 import java.util.Scanner;
 
 @SpringBootApplication
@@ -27,10 +28,16 @@ public class ProjetohashApplication {
 				break;
 			default:
 				break;
+
 		}*/
 
-		AtaqueDicionario ataqueDicionario = new AtaqueDicionario();
-		ataqueDicionario.run();
+		Performance performance = new Performance();
+		performance.run();
+
+		//System.out.println(geradorSenhas.generateHighEntropyPassword(8));
+
+		//AtaqueDicionario ataqueDicionario = new AtaqueDicionario();
+		//ataqueDicionario.run();
 
 	}
 
