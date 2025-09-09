@@ -1,12 +1,26 @@
 package fatec.estudo.projetohash;
+import org.openjdk.jmh.annotations.*;
+import org.openjdk.jmh.profile.GCProfiler;
+import org.openjdk.jmh.results.RunResult;
+import org.openjdk.jmh.runner.Runner;
+import org.openjdk.jmh.runner.RunnerException;
+import org.openjdk.jmh.runner.options.Options;
+import org.openjdk.jmh.runner.options.OptionsBuilder;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
+@State(Scope.Thread)
+@BenchmarkMode(Mode.AverageTime)
+@OutputTimeUnit(TimeUnit.MILLISECONDS)
 public class Performance {
 
     GeradorSenhas geradorSenhas = new GeradorSenhas();
     GerenciadorHashers gerenciadorHashers = new GerenciadorHashers();
+    String[] nordpassList = geradorSenhas.senhasNordpass;
 
     String[] random20Length8Array = new String[20];
     String[] random20Length12Array = new String[20];
@@ -29,15 +43,57 @@ public class Performance {
         }
     }
 
-    public void run() {
-        HashMap<BenchmarkEnum, Long> measurements = new HashMap<BenchmarkEnum, Long>();
+    @Benchmark
+    public void hashWithBcrypt_NORDPASS() {
+        gerenciadorHashers.hashPasswords(gerenciadorHashers.bcryptHasher_DEFAULT, nordpassList);
+    }
+
+    @Benchmark
+    public void hashWithScrypt_NORDPASS() {
+        gerenciadorHashers.hashPasswords(gerenciadorHashers.scryptHasher_DEFAULT, nordpassList);
+    }
+
+    @Benchmark
+    public void hashWithPbkdf2_NORDPASS() {
+        gerenciadorHashers.hashPasswords(gerenciadorHashers.pbkdf2Hasher_DEFAULT, nordpassList);
+    }
+
+    @Benchmark
+    public void hashWithArgon2_NORDPASS() {
+        gerenciadorHashers.hashPasswords(gerenciadorHashers.argon2Hasher_DEFAULT, nordpassList);
+    }
+
+
+    public void run() throws RunnerException {
 
         // NORDPASS LIST
 
-        long bcryptNordpass = gerenciadorHashers.hashPasswords(gerenciadorHashers.getBcryptHasher_DEFAULT(), geradorSenhas.senhasNordpass);
-        measurements.put(BenchmarkEnum.NORDPASS_BCRYPT, bcryptNordpass);
+        Options opt = new OptionsBuilder()
+                .include(Performance.class.getSimpleName())
+                .forks(/*2*/1)
+                .warmupIterations(/*3*/1)
+                .measurementIterations(/*5*/2)
+                .addProfiler(GCProfiler.class) // <--- tracks allocations
+                .addProfiler("jfr")
+                .build();
 
-        /*long scryptNordpass = gerenciadorHashers.hashPasswords(gerenciadorHashers.getScryptHasher_DEFAULT(), geradorSenhas.senhasNordpass);
+        Collection<RunResult> results = new Runner(opt).run();
+
+        // Map benchmark name -> time & allocated bytes
+        Map<String, String> summary = new HashMap<>();
+
+        for (RunResult result : results) {
+            String name = result.getParams().getBenchmark();
+            double avgTimeMs = result.getPrimaryResult().getScore(); // average time in ms
+            double allocatedBytes = result.getSecondaryResults().get("gc.alloc.rate.norm").getScore();
+            summary.put(name, String.format("Time: %.2f ms, Allocated: %.0f bytes", avgTimeMs, allocatedBytes));
+        }
+
+        System.out.println("\n=== NordPass Hashing Benchmark Summary ===");
+        summary.forEach((benchmark, stats) -> System.out.println(benchmark + " -> " + stats));
+
+/*
+        long scryptNordpass = gerenciadorHashers.hashPasswords(gerenciadorHashers.getScryptHasher_DEFAULT(), geradorSenhas.senhasNordpass);
         measurements.put(BenchmarkEnum.NORDPASS_SCRYPT, scryptNordpass);
 
         long pbkdf2Nordpass = gerenciadorHashers.hashPasswords(gerenciadorHashers.getPbkdf2Hasher_DEFAULT(), geradorSenhas.senhasNordpass);
@@ -45,6 +101,9 @@ public class Performance {
 
         long argon2Nordpass = gerenciadorHashers.hashPasswords(gerenciadorHashers.getArgon2Hasher_DEFAULT(), geradorSenhas.senhasNordpass);
         measurements.put(BenchmarkEnum.NORDPASS_ARGON2, argon2Nordpass);
+
+
+
 
         // PASSWORD10K LIST
 
@@ -101,11 +160,6 @@ public class Performance {
 
         long random20Length15Argon2 = gerenciadorHashers.hashPasswords(gerenciadorHashers.getArgon2Hasher_DEFAULT(), random20Length15Array);
         measurements.put(BenchmarkEnum.RANDOM20PASSWORDLENGTH15_ARGON2, random20Length15Argon2);*/
-
-        System.out.println("Medições:");
-        System.out.println("BCRYPT - NORDPASS");
-        System.out.println(measurements.get(BenchmarkEnum.NORDPASS_BCRYPT));
-
 
     }
 

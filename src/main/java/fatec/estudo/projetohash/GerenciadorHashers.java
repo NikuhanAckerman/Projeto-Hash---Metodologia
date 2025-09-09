@@ -51,16 +51,11 @@ public class GerenciadorHashers {
         this.bcryptHasher_DEFAULT = bcryptHasher_DEFAULT;
     }
 
-    public long hashPasswords(PasswordEncoder passwordEncoder, String[] passwords) {
-        StopWatch watch = new StopWatch();
-
-        watch.start();
+    public void hashPasswords(PasswordEncoder passwordEncoder, String[] passwords) {
         for (String password : passwords) {
             passwordEncoder.encode(password);
         }
-        watch.stop();
 
-        return watch.getTime();
     }
 
     public ArrayList<String> insertPasswords(PasswordEncoder passwordEncoder, String[] passwords) {

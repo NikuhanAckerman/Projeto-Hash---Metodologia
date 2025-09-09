@@ -1,5 +1,6 @@
 package fatec.estudo.projetohash;
 
+import org.openjdk.jmh.runner.RunnerException;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -11,7 +12,7 @@ import java.util.Scanner;
 @SpringBootApplication
 public class ProjetohashApplication {
 
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws IOException, RunnerException {
 		SpringApplication.run(ProjetohashApplication.class, args);
 
 		int opcao;
