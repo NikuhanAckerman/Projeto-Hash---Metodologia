@@ -54,8 +54,19 @@ public class GerenciadorHashers {
     public void hashPasswords(PasswordEncoder passwordEncoder, String[] passwords) {
         for (String password : passwords) {
             passwordEncoder.encode(password);
+
         }
 
+    }
+
+    public ArrayList<String> hashPasswordsReturnList(PasswordEncoder passwordEncoder, String[] passwords) {
+        ArrayList<String> listOfHashes = new ArrayList<>();
+
+        for (String password : passwords) {
+            listOfHashes.add(passwordEncoder.encode(password));
+        }
+
+        return listOfHashes;
     }
 
     public ArrayList<String> insertPasswords(PasswordEncoder passwordEncoder, String[] passwords) {

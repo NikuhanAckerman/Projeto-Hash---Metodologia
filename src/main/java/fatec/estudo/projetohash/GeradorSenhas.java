@@ -302,6 +302,7 @@ public class GeradorSenhas {
             int i = 0;
             while(reader.hasNextLine()) {
                 list10k[i] = reader.nextLine();
+                i++;
             }
             reader.close();
         } catch (FileNotFoundException e) {
@@ -311,14 +312,25 @@ public class GeradorSenhas {
         return list10k;
     }
 
-    public ArrayList<ArrayList<String>> generate3List20Passwords() {
-        ArrayList<ArrayList<String>> listOfListsOfPasswords = new ArrayList<>();
+    public String[] getHighEntropyList(int length) {
+        String[] highEntropyList = new String[20];
 
-        listOfListsOfPasswords.add(createPasswordList(Optional.empty()));
-        listOfListsOfPasswords.add(createPasswordList(Optional.empty()));
-        listOfListsOfPasswords.add(createPasswordList(Optional.empty()));
+        try {
+            File highEntropyFile = new File("C:\\hashcat-7.1.2\\experimento_benchmark_segurança\\passlist_size_20_length_" + length + ".txt");
+            Scanner reader = new Scanner(highEntropyFile);
+            int i = 0;
+            while(reader.hasNextLine()) {
+                highEntropyList[i] = reader.nextLine();
+                i++;
+            }
+            reader.close();
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
 
-        return listOfListsOfPasswords;
+
+
+        return highEntropyList;
     }
 
     public void generateHashTxts(ArrayList<String> hashList, String txtName) {
