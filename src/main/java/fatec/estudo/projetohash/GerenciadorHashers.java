@@ -1,6 +1,5 @@
 package fatec.estudo.projetohash;
 
-import org.apache.commons.lang3.time.StopWatch;
 import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -16,6 +15,7 @@ public class GerenciadorHashers {
     public SCryptPasswordEncoder scryptHasher_DEFAULT = SCryptPasswordEncoder.defaultsForSpringSecurity_v5_8();
 
     public Pbkdf2PasswordEncoder pbkdf2Hasher_DEFAULT = Pbkdf2PasswordEncoder.defaultsForSpringSecurity_v5_8();
+   
 
     public BCryptPasswordEncoder bcryptHasher_DEFAULT = new BCryptPasswordEncoder();
 
@@ -54,19 +54,7 @@ public class GerenciadorHashers {
     public void hashPasswords(PasswordEncoder passwordEncoder, String[] passwords) {
         for (String password : passwords) {
             passwordEncoder.encode(password);
-
         }
-
-    }
-
-    public ArrayList<String> hashPasswordsReturnList(PasswordEncoder passwordEncoder, String[] passwords) {
-        ArrayList<String> listOfHashes = new ArrayList<>();
-
-        for (String password : passwords) {
-            listOfHashes.add(passwordEncoder.encode(password));
-        }
-
-        return listOfHashes;
     }
 
     public ArrayList<String> insertPasswords(PasswordEncoder passwordEncoder, String[] passwords) {

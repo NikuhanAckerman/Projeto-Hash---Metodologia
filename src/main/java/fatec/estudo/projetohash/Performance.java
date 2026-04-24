@@ -7,7 +7,10 @@ import org.openjdk.jmh.runner.RunnerException;
 import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 @State(Scope.Thread)
@@ -18,39 +21,11 @@ public class Performance {
     GeradorSenhas geradorSenhas = new GeradorSenhas();
     GerenciadorHashers gerenciadorHashers = new GerenciadorHashers();
     String[] nordpassList = geradorSenhas.senhasNordpass;
-    String[] list10k = geradorSenhas.get10kList();
+    String[] weakpassList = geradorSenhas.get10kList();
 
-    String[] random20Length8Array = geradorSenhas.getHighEntropyList(8);
-    String[] random20Length12Array = geradorSenhas.getHighEntropyList(12);
-    String[] random20Length15Array = geradorSenhas.getHighEntropyList(15);
+    // NORDPASS BENCHMARK
 
-    public String[] getRandom20Length8Array() {
-        return random20Length8Array;
-    }
-
-    public void setRandom20Length8Array(String[] random20Length8Array) {
-        this.random20Length8Array = random20Length8Array;
-    }
-
-    public String[] getRandom20Length12Array() {
-        return random20Length12Array;
-    }
-
-    public void setRandom20Length12Array(String[] random20Length12Array) {
-        this.random20Length12Array = random20Length12Array;
-    }
-
-    public String[] getRandom20Length15Array() {
-        return random20Length15Array;
-    }
-
-    public void setRandom20Length15Array(String[] random20Length15Array) {
-        this.random20Length15Array = random20Length15Array;
-    }
-
-    /* NORDPASS LIST
-
-    @Benchmark
+    //@Benchmark
     public void hashWithBcrypt_NORDPASS() {
         gerenciadorHashers.hashPasswords(gerenciadorHashers.bcryptHasher_DEFAULT, nordpassList);
     }
@@ -60,121 +35,47 @@ public class Performance {
         gerenciadorHashers.hashPasswords(gerenciadorHashers.scryptHasher_DEFAULT, nordpassList);
     }
 
-    @Benchmark
+    //@Benchmark
     public void hashWithPbkdf2_NORDPASS() {
         gerenciadorHashers.hashPasswords(gerenciadorHashers.pbkdf2Hasher_DEFAULT, nordpassList);
     }
 
-    @Benchmark
+    //@Benchmark
     public void hashWithArgon2_NORDPASS() {
         gerenciadorHashers.hashPasswords(gerenciadorHashers.argon2Hasher_DEFAULT, nordpassList);
     }
 
-    // 10k LIST
+    // WEAKPASS BENCHMARK
 
-    @Benchmark
-    public void hashWithBcrypt_10kList() {
-        gerenciadorHashers.hashPasswords(gerenciadorHashers.bcryptHasher_DEFAULT, list10k);
+    //@Benchmark
+    public void hashWithBcrypt_WEAKPASS() {
+        gerenciadorHashers.hashPasswords(gerenciadorHashers.bcryptHasher_DEFAULT, weakpassList);
     }
 
     @Benchmark
-    public void hashWithScrypt_10kList() {
-        gerenciadorHashers.hashPasswords(gerenciadorHashers.scryptHasher_DEFAULT, list10k);
+    public void hashWithScrypt_WEAKPASS() {
+        gerenciadorHashers.hashPasswords(gerenciadorHashers.scryptHasher_DEFAULT, weakpassList);
     }
 
     @Benchmark
-    public void hashWithPbkdf2_10kList() {
-        gerenciadorHashers.hashPasswords(gerenciadorHashers.pbkdf2Hasher_DEFAULT, list10k);
+    public void hashWithPbkdf2_WEAKPASS() {
+        gerenciadorHashers.hashPasswords(gerenciadorHashers.pbkdf2Hasher_DEFAULT, weakpassList);
     }
 
-    @Benchmark
-    public void hashWithArgon2_10kList() {
-        gerenciadorHashers.hashPasswords(gerenciadorHashers.argon2Hasher_DEFAULT, list10k);
-    }
-
-
-     */
-
-
-    // CHAOTIC PASSWORDS LIST
-
-    // 20 LENGTH 8
-
-    @Benchmark
-    public void hashWithBcrypt_20Length8Array() {
-        gerenciadorHashers.hashPasswords(gerenciadorHashers.bcryptHasher_DEFAULT, getRandom20Length8Array());
-    }
-
-    @Benchmark
-    public void hashWithScrypt_20Length8Array() {
-        gerenciadorHashers.hashPasswords(gerenciadorHashers.scryptHasher_DEFAULT, getRandom20Length8Array());
-    }
-
-    @Benchmark
-    public void hashWithPbkdf2_20Length8Array() {
-        gerenciadorHashers.hashPasswords(gerenciadorHashers.pbkdf2Hasher_DEFAULT, getRandom20Length8Array());
-    }
-
-    @Benchmark
-    public void hashWithArgon2_20Length8Array() {
-        gerenciadorHashers.hashPasswords(gerenciadorHashers.argon2Hasher_DEFAULT, getRandom20Length8Array());
-    }
-
-    // 20 LENGTH 12
-
-    @Benchmark
-    public void hashWithBcrypt_20Length12Array() {
-        gerenciadorHashers.hashPasswords(gerenciadorHashers.bcryptHasher_DEFAULT, getRandom20Length12Array());
-    }
-
-    @Benchmark
-    public void hashWithScrypt_20Length12Array() {
-        gerenciadorHashers.hashPasswords(gerenciadorHashers.scryptHasher_DEFAULT, getRandom20Length12Array());
-    }
-
-    @Benchmark
-    public void hashWithPbkdf2_20Length12Array() {
-        gerenciadorHashers.hashPasswords(gerenciadorHashers.pbkdf2Hasher_DEFAULT, getRandom20Length12Array());
-    }
-
-    @Benchmark
-    public void hashWithArgon2_20Length12Array() {
-        gerenciadorHashers.hashPasswords(gerenciadorHashers.argon2Hasher_DEFAULT, getRandom20Length12Array());
-    }
-
-    // 20 LENGTH 15
-
-    @Benchmark
-    public void hashWithBcrypt_20Length15Array() {
-        gerenciadorHashers.hashPasswords(gerenciadorHashers.bcryptHasher_DEFAULT, getRandom20Length15Array());
-    }
-
-    @Benchmark
-    public void hashWithScrypt_20Length15Array() {
-        gerenciadorHashers.hashPasswords(gerenciadorHashers.scryptHasher_DEFAULT, getRandom20Length15Array());
-    }
-
-    @Benchmark
-    public void hashWithPbkdf2_20Length15Array() {
-        gerenciadorHashers.hashPasswords(gerenciadorHashers.pbkdf2Hasher_DEFAULT, getRandom20Length15Array());
-    }
-
-    @Benchmark
-    public void hashWithArgon2_20Length15Array() {
-        gerenciadorHashers.hashPasswords(gerenciadorHashers.argon2Hasher_DEFAULT, getRandom20Length15Array());
+    //@Benchmark
+    public void hashWithArgon2_WEAKPASS() {
+        gerenciadorHashers.hashPasswords(gerenciadorHashers.argon2Hasher_DEFAULT, weakpassList);
     }
 
     public void run() throws RunnerException {
 
-
-        // NORDPASS LIST
-
         Options opt = new OptionsBuilder()
                 .include(Performance.class.getSimpleName())
-                .forks(/*2*/1)
-                .warmupIterations(/*3*/2)
-                .measurementIterations(/*5*/3)
-                .addProfiler(GCProfiler.class) // <--- tracks allocations
+                .forks(1)
+                .warmupIterations(2)
+                .measurementIterations(3)
+                .addProfiler(GCProfiler.class) // <--- allocations
+                .addProfiler("jfr")
                 .build();
 
         Collection<RunResult> results = new Runner(opt).run();
@@ -186,10 +87,10 @@ public class Performance {
             String name = result.getParams().getBenchmark();
             double avgTimeMs = result.getPrimaryResult().getScore(); // average time in ms
             double allocatedBytes = result.getSecondaryResults().get("gc.alloc.rate.norm").getScore();
-            summary.put(name, String.format("Time: %.2f ms, Alocado: %.0f bytes", avgTimeMs, allocatedBytes));
+            summary.put(name, String.format("AvgTime: %.2f ms, Memory Allocated per operation: %.0f bytes", avgTimeMs, allocatedBytes));
         }
 
-        System.out.println("\n=== RESULTADOS DO BENCHMARK DE HASHING ===");
+        System.out.println("\n=== Hashing Benchmark Summary ===");
         summary.forEach((benchmark, stats) -> System.out.println(benchmark + " -> " + stats));
 
     }
