@@ -1,0 +1,15 @@
+hashcat -m 3200 -a 0 --status --status-timer=10 --runtime=10800 -o suapastaaqui/aquivaioarquivotxtdoresultado suapastaaqui/aquivaiotxtdoshashesbcryptdalistanordpass suapastaaqui/rockyou.txt
+
+hashcat -m 3200 -a 0 --status --status-timer=10 --runtime=10800 -o suapastaaqui/aquivaioarquivotxtdoresultado suapastaaqui/aquivaiotxtdoshashesbcryptdalistaweakpass suapastaaqui/rockyou.txt
+
+hashcat -m 34000 -a 0 --status --status-timer=10 --runtime=10800 -o suapastaaqui/aquivaioarquivotxtdoresultado suapastaaqui/aquivaiotxtdoshashesargon2dalistanordpass suapastaaqui/rockyou.txt
+
+hashcat -m 34000 -a 0 --status --status-timer=10 --runtime=10800 -o suapastaaqui/aquivaioarquivotxtdoresultado suapastaaqui/aquivaiotxtdoshashesargon2dalistaweakpass suapastaaqui/rockyou.txt
+
+hashcat -m 8900 -a 0 --status --status-timer=10 --self-test-disable --runtime=10800 -o suapastaaqui/aquivaioarquivotxtdoresultado suapastaaqui/aquivaiotxtdoshashesscryptdalistanordpass suapastaaqui/rockyou.txt
+
+hashcat -m 8900 -a 0 --status --status-timer=10 --self-test-disable --runtime=10800 -o suapastaaqui/aquivaioarquivotxtdoresultado suapastaaqui/aquivaiotxtdoshashesscryptdalistaweakpass suapastaaqui/rockyou.txt
+
+hashcat -m 10900 -a 0 --status --status-timer=10 --runtime=10800 -o suapastaaqui/aquivaioarquivotxtdoresultado suapastaaqui/aquivaiotxtdoshashespbkdf2dalistanordpass suapastaaqui/rockyou.txt
+
+hashcat -m 10900 -a 0 --status --status-timer=10 --runtime=10800 -o suapastaaqui/aquivaioarquivotxtdoresultado suapastaaqui/aquivaiotxtdoshashespbkdf2dalistaweakpass suapastaaqui/rockyou.txt
